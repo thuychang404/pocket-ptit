@@ -1,0 +1,28 @@
+.u-section-1 {
+    background-position: 50% 50%;
+}
+
+.u-section-1 .u-sheet-1 {
+    min-height: 100vh;
+}
+.u-section-2 .u-sheet-1 {
+    min-height: 76px;
+}
+
+.u-section-2 .u-btn-1 {
+    margin-bottom: 20px;
+    background-image: none;
+    margin-top: 20px;
+    padding: 0 15px 0 13px;
+}
+
+.u-section-2 .u-icon-1 {
+    font-size: 1.5em;
+}
+
+.webgl {
+    position: fixed;
+    top: 0;
+    left: 0;
+    outline: none;
+}

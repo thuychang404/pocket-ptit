@@ -1,0 +1,20 @@
+.u-section-1 {
+    background-position: 50% 50%;
+}
+
+.u-section-1 .u-sheet-1 {
+    min-height: 100vh;
+}
+.u-section-2 .u-sheet-1 {
+    min-height: 91px;
+}
+
+.u-section-2 .u-btn-1 {
+    background-image: none;
+    margin: 21px auto 21px 0;
+    padding: 10px 24px 10px 23px;
+}
+
+.u-section-2 .u-icon-1 {
+    font-size: 1.4706em;
+}

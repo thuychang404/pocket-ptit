@@ -1,0 +1,99 @@
+import "./style.css";
+import * as THREE from "three";
+import { ARButton } from "three/examples/jsm/webxr/ARButton.js";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+
+const canvas = document.querySelector(".webgl");
+const scene = new THREE.Scene();
+
+//avocado model: https://github.com/KhronosGroup/glTF-Sample-Models/tree/master/2.0/Avocado
+//more models: https://github.com/immersive-web/webxr-samples/tree/main/media/gltf
+const modelUrl = "/a2.glb";
+const loader = new GLTFLoader();
+
+loader.load(
+    // model URL
+    modelUrl,
+    // onLoad callback: what get's called once the full model has loaded
+    function (gltf) {
+        // gltf.scene contains the Three.js object group that represents the 3d object of the model
+        scene.add(gltf.scene);
+        console.log("Model added to scene");
+
+        gltf.scene.scale.multiplyScalar(0.0003); // áp dụng cho a1
+
+        // gltf.scene.scale.multiplyScalar(3); // áp dụng cho avocado
+
+        gltf.scene.position.z = -0.3;
+        gltf.scene.position.y = -0.1;
+    },
+    // onProgress callback: optional function for showing progress on model load
+    function (xhr) {
+        console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+    },
+    // onError callback
+    function (error) {
+        console.error(error);
+    }
+);
+
+const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
+light.position.set(0.5, 1, 0.25);
+scene.add(light);
+
+const sizes = {
+    width: window.innerWidth,
+    height: window.innerHeight,
+};
+
+window.addEventListener("resize", () => {
+    sizes.width = window.innerWidth;
+    sizes.height = window.innerHeight;
+    camera.aspect = sizes.width / sizes.height;
+    camera.updateProjectionMatrix();
+    renderer.setSize(sizes.width, sizes.height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+});
+
+const camera = new THREE.PerspectiveCamera(
+    75,
+    sizes.width / sizes.height,
+    0.01,
+    100
+);
+scene.add(camera);
+
+// Controls
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true;
+
+const renderer = new THREE.WebGLRenderer({
+    canvas: canvas,
+    antialias: true,
+    alpha: true,
+});
+renderer.setSize(sizes.width, sizes.height);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.xr.enabled = true;
+
+const arButton = ARButton.createButton(renderer);
+arButton.style.backgroundColor = "red";
+// arButton.style.border-color =  "#bc2626";
+arButton.style.stroke = "#bc2626";
+
+document.body.appendChild(arButton);
+
+const clock = new THREE.Clock();
+
+function animate() {
+    renderer.setAnimationLoop(update);
+}
+
+function update() {
+    const elapsedTime = clock.getElapsedTime();
+
+    renderer.render(scene, camera);
+}
+
+animate();
