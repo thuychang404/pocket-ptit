@@ -4,29 +4,29 @@ import { ARButton } from "three/examples/jsm/webxr/ARButton.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
+// Thiết lập cơ bản
 const canvas = document.querySelector(".webgl");
 const scene = new THREE.Scene();
-
-//avocado model: https://github.com/KhronosGroup/glTF-Sample-Models/tree/master/2.0/Avocado
-//more models: https://github.com/immersive-web/webxr-samples/tree/main/media/gltf
-const modelUrl = "/a2.glb";
 const loader = new GLTFLoader();
+
+let currentModel = null; // Biến lưu trữ model hiện tại
 
 loader.load(
     // model URL
-    modelUrl,
+    "/logo-ptit-2.glb",
     // onLoad callback: what get's called once the full model has loaded
     function (gltf) {
         // gltf.scene contains the Three.js object group that represents the 3d object of the model
+        currentModel = gltf.scene;
         scene.add(gltf.scene);
         console.log("Model added to scene");
 
-        gltf.scene.scale.multiplyScalar(0.0003); // áp dụng cho a1
+        gltf.scene.scale.multiplyScalar(0.04); // áp dụng cho a1
 
-        // gltf.scene.scale.multiplyScalar(3); // áp dụng cho avocado
+        gltf.scene.position.z = -0.6;
+        gltf.scene.position.y = -0.4;
 
-        gltf.scene.position.z = -0.3;
-        gltf.scene.position.y = -0.1;
+        // gltf.scene.rotation.x = 45;
     },
     // onProgress callback: optional function for showing progress on model load
     function (xhr) {
@@ -64,7 +64,6 @@ const camera = new THREE.PerspectiveCamera(
 );
 scene.add(camera);
 
-// Controls
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
 
@@ -78,22 +77,68 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.xr.enabled = true;
 
 const arButton = ARButton.createButton(renderer);
-arButton.style.backgroundColor = "red";
-// arButton.style.border-color =  "#bc2626";
-arButton.style.stroke = "#bc2626";
-
 document.body.appendChild(arButton);
 
 const clock = new THREE.Clock();
 
+// Hàm switchModel để thay đổi model
+window.switchModel = (element, url, options) => {
+    // Xóa model hiện tại khỏi scene (nếu có)
+    if (currentModel) {
+        scene.remove(currentModel);
+        currentModel = null;
+    }
+
+    // Tải model mới
+    loader.load(
+        url,
+        (gltf) => {
+            currentModel = gltf.scene;
+
+            // Áp dụng scale và position từ options
+            if (options.scale) currentModel.scale.setScalar(options.scale);
+            if (options.position) {
+                currentModel.position.set(
+                    options.position.x || 0,
+                    options.position.y || 0,
+                    options.position.z || 0
+                );
+            }
+            if (options.rotation) {
+                currentModel.rotation.set(
+                    options.rotation.x || 0,
+                    options.rotation.y || 0,
+                    options.rotation.z || 0
+                );
+            }
+
+            scene.add(currentModel);
+            console.log(`Model ${url} loaded successfully`);
+        },
+        (xhr) => {
+            console.log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
+        },
+        (error) => {
+            console.error(`Error loading model ${url}:`, error);
+        }
+    );
+
+    const slides = document.querySelectorAll(".slide");
+    slides.forEach((element) => {
+        element.classList.remove("selected");
+    });
+    element.classList.add("selected");
+};
+
+// Hàm animate
 function animate() {
     renderer.setAnimationLoop(update);
 }
 
 function update() {
-    const elapsedTime = clock.getElapsedTime();
-
+    controls.update();
     renderer.render(scene, camera);
 }
 
+// Khởi chạy animation
 animate();

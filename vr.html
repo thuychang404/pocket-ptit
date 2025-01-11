@@ -70,6 +70,7 @@
         data-lang="vi"
     >
         <header
+            id="menu-horizon"
             class="u-box-shadow u-clearfix u-header u-sticky u-sticky-1b97 u-white u-header"
             id="sec-c5f6"
         >
@@ -145,6 +146,13 @@
                                                 class="u-active-custom-color-3 u-button-style u-hover-palette-2-light-2 u-nav-link u-text-active-custom-color-4 u-text-hover-custom-color-3 u-white"
                                                 href="ar.html"
                                                 >Thực tại ảo tăng cường</a
+                                            >
+                                        </li>
+                                        <li class="u-nav-item">
+                                            <a
+                                                class="u-active-custom-color-3 u-button-style u-hover-palette-2-light-2 u-nav-link u-text-active-custom-color-4 u-text-hover-custom-color-3 u-white"
+                                                href="view-model.html"
+                                                >Xem mô hình học viện</a
                                             >
                                         </li>
                                     </ul>
@@ -414,6 +422,13 @@
                                                         href="ar.html"
                                                         >Thực tại ảo tăng
                                                         cường</a
+                                                    >
+                                                </li>
+                                                <li class="u-nav-item">
+                                                    <a
+                                                        class="u-button-style u-nav-link"
+                                                        href="view-model.html"
+                                                        >Xem mô hình học viện</a
                                                     >
                                                 </li>
                                             </ul>
@@ -705,7 +720,6 @@
             scrolling="no"
             allowvr="yes"
             width="100%"
-            height="100%"
             allow="vr; xr; accelerometer; gyroscope; autoplay;"
             allowfullscreen="true"
             webkitallowfullscreen="true"
@@ -743,6 +757,31 @@
                         "*"
                     );
             });
+
+            // Tính chiều cao menu và điều chỉnh .full-screen
+            function adjustFullScreenDiv() {
+                const menuBar = document.querySelector("#menu-horizon");
+                const fullScreenDiv = document.querySelector("#tour-embeded");
+
+                // Lấy chiều cao thực tế của menu
+                const menuHeight = menuBar.offsetHeight;
+
+                // Lấy chiều cao khả dụng của viewport (không bao gồm thanh điều hướng)
+                const viewportHeight = window.innerHeight;
+
+                // Lấy chiều cao của màn hình thiết bị
+                const deviceHeight = window.screen.height;
+
+                // Tính chiều cao của thanh điều hướng hệ thống
+                const systemBarHeight = deviceHeight - viewportHeight;
+
+                // Đặt chiều cao cho .full-screen
+                fullScreenDiv.style.height = `${viewportHeight - menuHeight}px`;
+            }
+
+            // Gọi hàm khi tải trang và khi thay đổi kích thước cửa sổ
+            window.addEventListener("load", adjustFullScreenDiv);
+            window.addEventListener("resize", adjustFullScreenDiv);
         </script>
 
         <section class="u-clearfix u-section-2" id="sec-5bcd">
@@ -1101,7 +1140,7 @@
                                 đủ an toàn bạn nhé!
                             </p>
                             <a
-                                href=""
+                                href="#"
                                 class="u-align-left u-border-2 u-border-palette-2-base u-btn u-button-style u-hover-palette-2-base u-none u-text-body-color u-text-hover-white u-btn-1"
                                 >bắt đầu thôi!</a
                             >

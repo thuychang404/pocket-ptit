@@ -23,6 +23,24 @@
             src="/src/nicepage.js"
             defer=""
         ></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
+            integrity="sha512-dLxUelApnYxpLt6K2iomGngnHO83iUvZytA3YjDUCjT0HDOHKXnVYdf3hU4JjM8uEhxf9nD1/ey98U3t2vZ0qQ=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/aframe/1.2.0/aframe.min.js"
+            integrity="sha512-/gO16YMp20RIqCZXZyvMlzALQqEoiDU0akshw25wFiXCRGl+0p/HPWkOd8HWFn6bnatGhxakGLfYhWaPPVQIyA=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/ar.js/2.2.2/aframe-ar.min.js"
+            integrity="sha512-Vwmkm1QOtdVNLuwkxaXXyB/aBY0lZvI4NTv+83gs+pU0HuZ2j3inyfgpMpJHYRS0O3PoHEhO6mKomMYBKXRMWw=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
         <meta name="generator" content="Nicepage 7.1.1, nicepage.com" />
         <link rel="icon" href="images/logo-single.png" />
         <link
@@ -61,6 +79,7 @@
         data-lang="vi"
     >
         <header
+            id="menu-horizon"
             class="u-box-shadow u-clearfix u-header u-sticky u-sticky-1b97 u-white u-header"
             id="sec-c5f6"
         >
@@ -136,6 +155,13 @@
                                                 class="u-active-custom-color-3 u-button-style u-hover-palette-2-light-2 u-nav-link u-text-active-custom-color-4 u-text-hover-custom-color-3 u-white"
                                                 href="ar.html"
                                                 >Thực tại ảo tăng cường</a
+                                            >
+                                        </li>
+                                        <li class="u-nav-item">
+                                            <a
+                                                class="u-active-custom-color-3 u-button-style u-hover-palette-2-light-2 u-nav-link u-text-active-custom-color-4 u-text-hover-custom-color-3 u-white"
+                                                href="view-model.html"
+                                                >Xem mô hình học viện</a
                                             >
                                         </li>
                                     </ul>
@@ -405,6 +431,13 @@
                                                         href="ar.html"
                                                         >Thực tại ảo tăng
                                                         cường</a
+                                                    >
+                                                </li>
+                                                <li class="u-nav-item">
+                                                    <a
+                                                        class="u-button-style u-nav-link"
+                                                        href="view-model.html"
+                                                        >Xem mô hình học viện</a
                                                     >
                                                 </li>
                                             </ul>
@@ -687,7 +720,89 @@
             </div>
         </header>
 
-        <canvas class="webgl"></canvas>
+        <canvas
+            class="u-clearfix u-container-align-center u-image lazyload u-section-1 webgl"
+        ></canvas>
+        <div class="slider">
+            <div class="slides">
+                <button
+                    class="slide"
+                    onclick="switchModel(this, '/a1.glb', { scale: 0.0003, position: { x: 0, y: -0.15, z: -0.4 } })"
+                    style="background-image: url('public/images/A1.jpg')"
+                ></button>
+                <button
+                    class="slide"
+                    onclick="switchModel(this, '/a2.glb', { scale: 0.02, position: { x: 0, y: -0.05, z: -0.2 }, rotation: {y: 90} })"
+                    style="
+                        background-image: url('public/images/banner-mobile.png');
+                    "
+                ></button>
+                <button
+                    class="slide"
+                    onclick="switchModel(this, '/a3.glb', { scale: 0.023, position: { x: 0, y: -0.08, z: -0.25 }, rotation: {y: 30}})"
+                    style="background-image: url('public/images/A3.jpg')"
+                ></button>
+            </div>
+        </div>
+
         <script type="module" src="/src/main.js"></script>
+
+        <style>
+            /* This keeps child nodes hidden while the element loads */
+            :not(:defined) > * {
+                display: none;
+            }
+
+            body,
+            html {
+                margin: 0;
+                padding: 0;
+                height: 100%;
+            }
+
+            .slider {
+                width: 100%;
+                text-align: center;
+                overflow: hidden;
+                position: absolute;
+                bottom: 16px;
+            }
+
+            .slides {
+                display: flex;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                scroll-behavior: smooth;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .slide {
+                scroll-snap-align: start;
+                flex-shrink: 0;
+                width: 100px;
+                height: 100px;
+                background-size: contain;
+                background-repeat: no-repeat;
+                background-position: center;
+                background-color: #d82221;
+                margin-right: 10px;
+                border-radius: 10px;
+                border: none;
+                display: flex;
+                background-size: cover;
+            }
+
+            .slide.selected {
+                border: 2px solid #4285f4;
+            }
+
+            .slide:focus {
+                outline: none;
+            }
+
+            .slide:focus-visible {
+                outline: 1px solid #4285f4;
+            }
+        </style>
     </body>
 </html>
