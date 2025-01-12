@@ -77,6 +77,8 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.xr.enabled = true;
 
 const arButton = ARButton.createButton(renderer);
+
+arButton.style.backgroundColor = "red";
 document.body.appendChild(arButton);
 
 const clock = new THREE.Clock();
